@@ -11,7 +11,6 @@ export default function App({
   Component,
   pageProps: { dehydratedState, ...pageProps },
 }: AppProps) {
-  console.log('_app')
   return (
     <Layout>
       <Global styles={globalStyles} />

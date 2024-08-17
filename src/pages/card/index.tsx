@@ -6,6 +6,8 @@ import { useRouter } from 'next/router'
 import { getCards } from '@remote/card'
 import ListRow from '@shared/ListRow'
 import Badge from '@shared/Badge'
+import Input from '@shared/Input'
+import Top from '@shared/Top'
 
 function CardListPage() {
   const {
@@ -35,6 +37,14 @@ function CardListPage() {
 
   return (
     <div>
+      <Top title="추천 카드" subTitle="회원님을 위해 준비했어요" />
+      <div style={{ padding: '0 24px 12px 24px' }}>
+        <Input
+          onFocus={() => {
+            navigate.push('/card/search')
+          }}
+        />
+      </div>
       <InfiniteScroll
         dataLength={cards?.length}
         hasMore={hasNextPage}
@@ -63,8 +73,6 @@ function CardListPage() {
 }
 
 export async function getServerSideProps() {
-  console.log('getServerSideProps')
-
   const client = new QueryClient()
 
   await client.prefetchInfiniteQuery(['cards'], () => getCards())
