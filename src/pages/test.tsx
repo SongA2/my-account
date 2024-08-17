@@ -1,4 +1,4 @@
-import EventBannerAddButton from '@/components/test/EventBannerAddButton'
+import EventBannerAddButton from '@components/test/EventBannerAddButton'
 
 function TestPage() {
   return (
