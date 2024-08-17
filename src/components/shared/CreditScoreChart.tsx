@@ -59,7 +59,7 @@ function CreditScoreChart({
           strokeDashoffset={dashoffset}
         ></path>
       </svg>
-      <Text bold={true} css={textStyles} typography="t6">
+      <Text bold css={textStyles} typography="t6">
         {score === 0 ? '???' : addDelimiter(score)}
       </Text>
     </Container>
