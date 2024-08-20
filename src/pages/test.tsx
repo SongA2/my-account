@@ -1,12 +1,32 @@
 import EventBannerAddButton from '@components/test/EventBannerAddButton'
 import CardListAddButton from '@/components/test/CardListAddButton'
 
+import Flex from '@shared/Flex'
+import Text from '@shared/Text'
+import Spacing from '@shared/Spacing'
+import EventForm from '@components/test/EventForm'
+
 function TestPage() {
   return (
-    <div>
+    <Flex direction="column">
+      <Text bold>배너</Text>
       <EventBannerAddButton />
+      <Spacing
+        size={8}
+        backgroundColor="gray100"
+        style={{ margin: '20px 0' }}
+      />
+
+      <Text bold>카드</Text>
       <CardListAddButton />
-    </div>
+      <Spacing
+        size={8}
+        backgroundColor="gray100"
+        style={{ margin: '20px 0' }}
+      />
+
+      <EventForm />
+    </Flex>
   )
 }
 
