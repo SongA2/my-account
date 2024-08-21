@@ -1,4 +1,4 @@
-import withAuth from '@shared/hocs/withAuth'
+import withAuth from '@/hooks/withAuth'
 
 import Flex from '@shared/Flex'
 import Button from '@shared/Button'

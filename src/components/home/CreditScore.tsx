@@ -4,6 +4,7 @@ import Text from '@shared/Text'
 import Button from '@shared/Button'
 import Spacing from '@shared/Spacing'
 import Skeleton from '@shared/Skeleton'
+import Link from 'next/link'
 
 function CreditScore() {
   return (
@@ -15,7 +16,9 @@ function CreditScore() {
             점수를 올리세요
           </Text>
           <Spacing size={8} />
-          <Button>내 신용점수 보러가기</Button>
+          <Link href="/credit">
+            <Button>내 신용점수 보러가기</Button>
+          </Link>
         </Flex>
         <CreditScoreChart width={80} height={80} score={900} />
       </Flex>
