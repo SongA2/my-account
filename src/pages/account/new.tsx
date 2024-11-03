@@ -4,10 +4,17 @@ import withAuth from '@hooks/withAuth'
 import ProgressBar from '@shared/ProgressBar'
 import Terms from '@components/account/Terms'
 import useUser from '@hooks/useUser'
-import { getTerms, setTerms } from '@/remote/account'
+import { getTerms, setTerms, createAccount, getAccount } from '@remote/account'
 import { GetServerSidePropsContext } from 'next'
 import { getSession } from 'next-auth/react'
-import { User } from '@/models/user'
+import { User } from '@models/user'
+import Form from '@components/account/Form'
+import { Account } from '@models/account'
+import dynamic from 'next/dynamic'
+import FullPageLoader from '@/components/shared/FullPageLoader'
+import { useRouter } from 'next/router'
+
+const FixedBottomButton = dynamic(() => import('@shared/FixedBottomButton'))
 
 // STEP 0 = 약관동의
 // STEP 1 = 계좌 개설 폼 페이지
@@ -15,8 +22,9 @@ import { User } from '@/models/user'
 const LAST_STEP = 2 // 완료페이지
 
 function AccountNew({ initialStep }: { initialStep: number }) {
-  const [step, setStep] = useState(0)
+  const [step, setStep] = useState(initialStep)
   const user = useUser()
+  const navigator = useRouter()
 
   return (
     <div>
@@ -30,6 +38,31 @@ function AccountNew({ initialStep }: { initialStep: number }) {
             setStep(step + 1)
           }}
         />
+      ) : null}
+
+      {step === 1 ? (
+        <Form
+          onNext={async (formValues) => {
+            const newAccount = {
+              ...formValues,
+              accountNumber: Date.now(),
+              balance: 0,
+              status: 'READY',
+              userId: user?.id as string,
+            } as Account
+
+            await createAccount(newAccount)
+
+            setStep(step + 1)
+          }}
+        />
+      ) : null}
+
+      {step === 2 ? (
+        <>
+          <FullPageLoader message="계좌개설 신청이 완료되었어요" />
+          <FixedBottomButton label="확인" onClick={() => navigator.push('/')} />
+        </>
       ) : null}
     </div>
   )
@@ -48,7 +81,9 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     }
   }
 
-  if (agreedTerms != null) {
+  const account = await getAccount((session?.user as User).id)
+
+  if (account == null) {
     return {
       props: {
         initialStep: 1,
@@ -58,7 +93,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
   return {
     props: {
-      initialStep: 0,
+      initialStep: 2,
     },
   }
 }

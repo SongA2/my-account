@@ -1,4 +1,4 @@
-import { Term, AccountForm } from '@models/account'
+import { AccountForm, Term } from '@models/account'
 
 export const 약관목록 = [
   {

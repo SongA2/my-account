@@ -1,6 +1,6 @@
 import { useQuery } from 'react-query'
 
-import { getEventBanners } from '@/remote/banner'
+import { getEventBanners } from '@remote/banner'
 
 function useEventBanners() {
   return useQuery(
