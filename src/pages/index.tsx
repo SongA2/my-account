@@ -5,7 +5,11 @@ import { BannerSkeleton } from '@components/home/EventBanners'
 import { CreditScoreSkeleton } from '@components/home/CreditScore'
 import Spacing from '@shared/Spacing'
 import { CardListSkeleton } from '@components/home/CartList'
-import { useSession } from 'next-auth/react'
+import { getSession, useSession } from 'next-auth/react'
+import { GetServerSidePropsContext } from 'next'
+import { dehydrate, QueryClient } from 'react-query'
+import { getAccount } from '@remote/account'
+import { User } from 'next-auth'
 
 const EventBanners = dynamic(() => import('@components/home/EventBanners'), {
   ssr: false,
@@ -31,7 +35,30 @@ export default function Home() {
       <Account />
       <Spacing size={8} backgroundColor="gray100" />
       <CreditScore />
+      <Spacing size={8} backgroundColor="gray100" />
       <CardList />
     </>
   )
+}
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const session = await getSession(context)
+
+  if (session != null && session.user != null) {
+    const client = new QueryClient()
+
+    client.prefetchQuery(['account', (session.user as User)?.id], () =>
+      getAccount((session.user as User)?.id),
+    )
+
+    return {
+      props: {
+        dehydratedState: JSON.parse(JSON.stringify(dehydrate(client))),
+      },
+    }
+  }
+
+  return {
+    props: {},
+  }
 }
