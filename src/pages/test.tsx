@@ -5,6 +5,7 @@ import Flex from '@shared/Flex'
 import Text from '@shared/Text'
 import Spacing from '@shared/Spacing'
 import EventForm from '@components/test/EventForm'
+import TransactionForm from '@components/test/TransactionForm'
 
 function TestPage() {
   return (
@@ -26,6 +27,14 @@ function TestPage() {
       />
 
       <EventForm />
+      <Spacing
+        size={8}
+        backgroundColor="gray100"
+        style={{ margin: '20px 0' }}
+      />
+
+      <Text bold>입출금 테스트</Text>
+      <TransactionForm />
     </Flex>
   )
 }
