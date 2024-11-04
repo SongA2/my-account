@@ -65,10 +65,7 @@ function TransactionForm() {
     ])
 
     window.alert('입출금 데이터 생성 완료')
-    console.log('newTransaction', newTransaction)
   }
-
-  console.log(formValues)
 
   return (
     <div>
