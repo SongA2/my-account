@@ -12,7 +12,7 @@ import { Transaction } from '@models/transaction'
 function TransactionForm() {
   const [formValues, setFormValues] = useState({
     userId: '',
-    type: 'diposit',
+    type: 'deposit',
     amount: '',
     displayText: '',
   })
@@ -105,7 +105,7 @@ function TransactionForm() {
         />
         <Spacing size={8} />
         <Button onClick={handleSubmit}>
-          {formValues.type === 'diposit' ? '입금' : '출금'}
+          {formValues.type === 'deposit' ? '입금' : '출금'}
         </Button>
       </Flex>
     </div>

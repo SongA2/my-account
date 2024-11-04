@@ -1,4 +1,4 @@
-export type TransactionType = 'diposit' | 'withdraw'
+export type TransactionType = 'deposit' | 'withdraw'
 
 export interface Transaction {
   userId: string
