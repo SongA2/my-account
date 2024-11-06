@@ -4,21 +4,37 @@ import { 약관목록 } from '@constants/account'
 import Text from '@shared/Text'
 import useUser from '@hooks/useUser'
 import { User } from '@models/user'
-import { getTerms } from '@remote/account'
+import { getTerms, updateTerms } from '@remote/account'
 import { GetServerSidePropsContext } from 'next'
 import { getSession } from 'next-auth/react'
 import { useMemo } from 'react'
-import { dehydrate, QueryClient, useQuery } from 'react-query'
+import {
+  dehydrate,
+  QueryClient,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from 'react-query'
 import Button from '@shared/Button'
 
 function TermsPage() {
   const user = useUser()
+  const client = useQueryClient()
 
   const { data } = useQuery(
     ['terms', user?.id],
     () => getTerms(user?.id as string),
     {
       enabled: user != null,
+    },
+  )
+
+  const { mutate, isLoading } = useMutation(
+    (termIds: string[]) => updateTerms(user?.id as string, termIds),
+    {
+      onSuccess: () => {
+        client.invalidateQueries(['terms', user?.id])
+      },
     },
   )
 
@@ -41,6 +57,16 @@ function TermsPage() {
     return { 필수약관목록, 선택약관목록 }
   }, [data])
 
+  const handleDisagree = (selectedTermId: string) => {
+    const updatedTermIds = data?.termIds.filter(
+      (termId) => termId !== selectedTermId,
+    )
+
+    if (updatedTermIds != null) {
+      mutate(updatedTermIds)
+    }
+  }
+
   return (
     <div>
       <Top title="약관" subTitle="약관 리스트 및 철회" />
@@ -62,7 +88,14 @@ function TermsPage() {
               contents={
                 <ListRow.Texts title={`[선택] ${term.title}`} subTitle="" />
               }
-              right={<Button>철회</Button>}
+              right={
+                <Button
+                  onClick={() => handleDisagree(term.id)}
+                  disabled={isLoading}
+                >
+                  철회
+                </Button>
+              }
             />
           ))}
         </ul>
