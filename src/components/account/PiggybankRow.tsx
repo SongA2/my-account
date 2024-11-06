@@ -72,7 +72,9 @@ function PiggybankRow() {
             </Flex>
           }
           withArrow
-          onClick={() => navigator.push('/account/piggybank/new')}
+          onClick={() => {
+            // TODO: 저금통 상세보기 or 저금통 리스트
+          }}
         />
       </ul>
     </div>
