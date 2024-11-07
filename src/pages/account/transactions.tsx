@@ -31,14 +31,15 @@ const FILTERS: Array<{ label: string; value: TransactionFilterType }> = [
 ]
 
 function TransactionsPage() {
-    const [currentFilter, setCurrentFilter] = useState<TransactionFilterType>('all')
+  const [currentFilter, setCurrentFilter] =
+    useState<TransactionFilterType>('all')
 
   const {
     data,
     hasNextPage = false,
     isFetching,
     fetchNextPage,
-  } = useTransactions({filter: currentFilter})
+  } = useTransactions({ filter: currentFilter })
 
   const loadMore = useCallback(() => {
     if (hasNextPage === false || isFetching) {
@@ -52,13 +53,18 @@ function TransactionsPage() {
 
   return (
     <div>
-        <Flex as="ul" justify='flex-end' style={{ padding: 24}}>
-            {FILTERS.map((filter) => (
-                <li key={filter.value} onClick={() => {
-                    setCurrentFilter(filter.value)
-                }}>{filter.label}</li>
-            ))}
-        </Flex>
+      <Flex as="ul" justify="flex-end" style={{ padding: 24 }}>
+        {FILTERS.map((filter) => (
+          <li
+            key={filter.value}
+            onClick={() => {
+              setCurrentFilter(filter.value)
+            }}
+          >
+            {filter.label}
+          </li>
+        ))}
+      </Flex>
       <InfiniteScroll
         dataLength={transactions.length}
         hasMore={hasNextPage}
